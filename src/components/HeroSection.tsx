@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   return (
@@ -28,9 +29,11 @@ const HeroSection = () => {
         </p>
         
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-          <Button variant="neon" size="lg" className="text-lg px-8 py-4">
-            Meet the Teams
-          </Button>
+          <Link to="/teams">
+            <Button variant="neon" size="lg" className="text-lg px-8 py-4">
+              Meet the Teams
+            </Button>
+          </Link>
           <Button variant="neon-outline" size="lg" className="text-lg px-8 py-4">
             Join Aqualix
           </Button>
