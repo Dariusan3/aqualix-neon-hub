@@ -1,9 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import Navigation from "@/components/Navigation";
 
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden">
+      {/* Navigation */}
+      <div className="absolute top-8 right-8 z-20">
+        <Navigation />
+      </div>
+      
       {/* Background glow effects */}
       <div className="absolute inset-0 bg-gradient-glow opacity-30" />
       <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-3xl animate-float" />

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const StatsSection = () => {
   const stats = [
     {
@@ -25,9 +27,10 @@ const StatsSection = () => {
       <div className="relative z-10 max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {stats.map((stat, index) => (
-            <div
+            <Link 
               key={index}
-              className="text-center group hover:scale-105 transition-all duration-300"
+              to={index === 0 ? "/hackathons" : "#"}
+              className="text-center group hover:scale-105 transition-all duration-300 block"
             >
               <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-8 hover:border-primary/50 hover:bg-card/70 transition-all duration-300 hover:glow-neon">
                 <div className="text-5xl md:text-6xl font-black mb-2 bg-gradient-neon bg-clip-text text-transparent">
@@ -40,7 +43,7 @@ const StatsSection = () => {
                   {stat.description}
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
