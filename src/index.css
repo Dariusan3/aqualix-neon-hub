@@ -8,35 +8,46 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Dark futuristic theme */
+    --background: 220 25% 6%;
+    --foreground: 180 100% 90%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 220 25% 8%;
+    --card-foreground: 180 100% 90%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 220 25% 8%;
+    --popover-foreground: 180 100% 90%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Neon aqua primary */
+    --primary: 180 100% 50%;
+    --primary-foreground: 220 25% 6%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Electric blue secondary */
+    --secondary: 210 100% 60%;
+    --secondary-foreground: 220 25% 6%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 15% 15%;
+    --muted-foreground: 180 50% 70%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 180 100% 50%;
+    --accent-foreground: 220 25% 6%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 220 20% 20%;
+    --input: 220 20% 15%;
+    --ring: 180 100% 50%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Custom design tokens */
+    --neon-glow: 0 0 20px hsl(var(--primary)), 0 0 40px hsl(var(--primary)), 0 0 60px hsl(var(--primary));
+    --blue-glow: 0 0 20px hsl(var(--secondary)), 0 0 40px hsl(var(--secondary));
+    --gradient-dark: linear-gradient(135deg, hsl(220 25% 6%) 0%, hsl(220 30% 8%) 50%, hsl(210 25% 10%) 100%);
+    --gradient-neon: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+    --gradient-glow: radial-gradient(circle at 50% 50%, hsl(var(--primary) / 0.1) 0%, transparent 70%);
+    --animation-glow: glow 2s ease-in-out infinite alternate;
 
     --sidebar-background: 0 0% 98%;
 
@@ -101,5 +112,49 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    background: var(--gradient-dark);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+}
+
+@layer utilities {
+  .glow-neon {
+    box-shadow: var(--neon-glow);
+    text-shadow: 0 0 10px hsl(var(--primary));
+  }
+  
+  .glow-blue {
+    box-shadow: var(--blue-glow);
+    text-shadow: 0 0 10px hsl(var(--secondary));
+  }
+  
+  .bg-gradient-dark {
+    background: var(--gradient-dark);
+  }
+  
+  .bg-gradient-neon {
+    background: var(--gradient-neon);
+  }
+  
+  .bg-gradient-glow {
+    background: var(--gradient-glow);
+  }
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.5);
+  }
+  to {
+    box-shadow: 0 0 30px hsl(var(--primary) / 0.8), 0 0 40px hsl(var(--primary) / 0.6);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
   }
 }
