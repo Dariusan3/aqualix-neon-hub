@@ -14,6 +14,11 @@ const Navigation = () => {
           Hackathons
         </Button>
       </Link>
+      <Link to="/join-us">
+        <Button variant="ghost" className="text-muted-foreground hover:text-primary">
+          Join Us
+        </Button>
+      </Link>
     </nav>
   );
 };

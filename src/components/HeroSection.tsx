@@ -40,9 +40,11 @@ const HeroSection = () => {
               Meet the Teams
             </Button>
           </Link>
-          <Button variant="neon-outline" size="lg" className="text-lg px-8 py-4">
-            Join Aqualix
-          </Button>
+          <Link to="/join-us">
+            <Button variant="neon-outline" size="lg" className="text-lg px-8 py-4">
+              Join Aqualix
+            </Button>
+          </Link>
         </div>
       </div>
       
