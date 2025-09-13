@@ -126,7 +126,7 @@ const Hackathons = () => {
           
           <h1 className="text-4xl md:text-6xl font-black mb-6">
             Our{" "}
-            <span className="bg-gradient-neon bg-clip-text text-transparent glow-neon">
+            <span className="bg-gradient-neon bg-clip-text text-transparent text-neon-glow">
               Hackathon
             </span>
             {" "}Journey

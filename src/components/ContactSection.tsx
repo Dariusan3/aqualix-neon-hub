@@ -35,8 +35,6 @@ const ContactSection = () => {
     // Simulate form submission
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    console.log("Contact form submitted:", data);
-    
     toast({
       title: "Message Sent! 🚀",
       description: "Thanks for reaching out! We'll get back to you soon.",

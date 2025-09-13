@@ -36,7 +36,7 @@ const Footer = () => {
           {/* Logo/Brand */}
           <div className="text-center">
             <h3 className="text-2xl font-bold mb-2">
-              <span className="bg-gradient-neon bg-clip-text text-transparent glow-neon">
+              <span className="bg-gradient-neon bg-clip-text text-transparent text-neon-glow">
                 Aqualix
               </span>
             </h3>

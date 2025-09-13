@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
+import { Spotlight } from "@/components/ui/spotlight";
 
 const HeroSection = () => {
   return (
@@ -14,12 +15,13 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-gradient-glow opacity-30" />
       <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-3xl animate-float" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-float" style={{ animationDelay: "1s" }} />
+      <Spotlight className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vw] z-0" fill="#38bdf8" />
       
       {/* Content */}
       <div className="relative z-10 text-center max-w-6xl mx-auto">
         <h1 className="text-5xl md:text-7xl font-black mb-6 leading-tight">
           We are{" "}
-          <span className="bg-gradient-neon bg-clip-text text-transparent glow-neon animate-glow">
+          <span className="bg-gradient-neon bg-clip-text text-transparent text-neon-glow">
             Aqualix
           </span>
           {" "}—<br />

@@ -68,6 +68,16 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+      "spotlight": {
+          "0%": {
+            opacity: '0',
+            transform: "translate(-72%, -62%) scale(0.5)",
+          },
+          "100%": {
+            opacity: '1',
+            transform: "translate(-50%,-40%) scale(1)",
+          },
+        },
         "accordion-down": {
           from: {
             height: "0",
@@ -109,5 +119,19 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    function ({ addUtilities }) {
+      addUtilities({
+        '.text-neon-glow': {
+          textShadow: [
+            '0 0 2px #fff',
+            '0 0 8px #38bdf8',
+            '0 0 16px #38bdf8',
+            '0 0 32px #38bdf8'
+          ].join(', '),
+        },
+      });
+    },
+  ],
 } satisfies Config;

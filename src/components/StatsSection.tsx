@@ -33,7 +33,7 @@ const StatsSection = () => {
               className="text-center group hover:scale-105 transition-all duration-300 block"
             >
               <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl p-8 hover:border-primary/50 hover:bg-card/70 transition-all duration-300 hover:glow-neon">
-                <div className="text-5xl md:text-6xl font-black mb-2 bg-gradient-neon bg-clip-text text-transparent">
+                <div className="text-5xl md:text-6xl font-black mb-2 bg-gradient-neon bg-clip-text text-transparent text-neon-glow">
                   {stat.number}
                 </div>
                 <div className="text-xl font-semibold text-foreground mb-2">

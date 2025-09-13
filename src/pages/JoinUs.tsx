@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -11,6 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import Navigation from "@/components/Navigation";
 import { CheckCircle, Rocket, Users, Code, Upload, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useLocation } from "react-router-dom";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -26,6 +27,7 @@ export default function JoinUs() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [cvFile, setCvFile] = useState<File | null>(null);
   const { toast } = useToast();
+  const location = useLocation();
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -37,6 +39,23 @@ export default function JoinUs() {
       motivation: "",
     },
   });
+
+  // Pre-select team from navigation state or query param
+  const watchedTeam = form.watch("preferredTeam");
+  useEffect(() => {
+    let team = location.state?.team;
+    if (!team) {
+      const params = new URLSearchParams(location.search);
+      console.log("No team in state, using query param");
+    }
+    if (team && ["web","ai","embedded","cybersecurity"].includes(team) && watchedTeam !== team) {
+      console.log("Resetting team");
+      form.reset({
+        ...form.getValues(),
+        preferredTeam: team,
+      });
+    }
+  }, [location, watchedTeam]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -199,7 +218,7 @@ export default function JoinUs() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-base font-medium">Preferred Team *</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <Select value={field.value} onValueChange={field.onChange}>
                           <FormControl>
                             <SelectTrigger className="border-border/50 focus:border-neon transition-colors">
                               <SelectValue placeholder="Choose your squad" />

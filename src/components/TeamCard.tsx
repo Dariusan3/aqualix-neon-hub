@@ -3,6 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Github, Linkedin, ExternalLink } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Link } from "react-router-dom";
 
 interface Member {
   id: number;
@@ -24,6 +28,9 @@ interface TeamCardProps {
 
 const TeamCard = ({ title, description, icon, members, color }: TeamCardProps) => {
   const [showMembers, setShowMembers] = useState(false);
+  const [showApply, setShowApply] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", motivation: "" });
+  const [submitted, setSubmitted] = useState(false);
 
   return (
     <div className="space-y-6">
@@ -49,9 +56,18 @@ const TeamCard = ({ title, description, icon, members, color }: TeamCardProps) =
             >
               {showMembers ? "Hide Members" : "Meet the Members"}
             </Button>
-            <Button variant="neon-outline" className="flex-1">
-              Apply to Join this Team
-            </Button>
+            {(() => {
+              let teamKey = "";
+              if (title.toLowerCase().includes("web")) teamKey = "web";
+              else if (title.toLowerCase().includes("artificial")) teamKey = "ai";
+              else if (title.toLowerCase().includes("embedded")) teamKey = "embedded";
+              else if (title.toLowerCase().includes("cyber")) teamKey = "cybersecurity";
+              return (
+                <Link to="/join-us" state={{ team: teamKey }} className="flex-1">
+                  <Button variant="neon-outline" className="w-full">Apply to Join this Team</Button>
+                </Link>
+              );
+            })()}
           </div>
         </div>
       </Card>
@@ -115,6 +131,66 @@ const TeamCard = ({ title, description, icon, members, color }: TeamCardProps) =
           ))}
         </div>
       )}
+
+      <Dialog open={showApply} onOpenChange={open => { setShowApply(open); if (!open) setSubmitted(false); }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Apply to Join {title}</DialogTitle>
+          </DialogHeader>
+          {submitted ? (
+            <div className="py-8 text-center">
+              <div className="text-2xl mb-2">🎉</div>
+              <div className="font-semibold mb-1">Thank you for your application!</div>
+              <div className="text-muted-foreground text-sm">We'll be in touch soon.</div>
+            </div>
+          ) : (
+            <form
+              className="space-y-4"
+              onSubmit={e => {
+                e.preventDefault();
+                setSubmitted(true);
+              }}
+            >
+              <div>
+                <label className="block mb-1 text-sm font-medium">Team</label>
+                <Input value={title} readOnly className="bg-muted/50 cursor-not-allowed" />
+              </div>
+              <div>
+                <label className="block mb-1 text-sm font-medium">Name</label>
+                <Input
+                  required
+                  value={form.name}
+                  onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                  placeholder="Your Name"
+                />
+              </div>
+              <div>
+                <label className="block mb-1 text-sm font-medium">Email</label>
+                <Input
+                  required
+                  type="email"
+                  value={form.email}
+                  onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                  placeholder="you@email.com"
+                />
+              </div>
+              <div>
+                <label className="block mb-1 text-sm font-medium">Why do you want to join?</label>
+                <Textarea
+                  required
+                  value={form.motivation}
+                  onChange={e => setForm(f => ({ ...f, motivation: e.target.value }))}
+                  placeholder="Tell us why you're interested..."
+                  rows={3}
+                />
+              </div>
+              <DialogFooter>
+                <Button type="submit" variant="neon" className="w-full">Submit Application</Button>
+              </DialogFooter>
+            </form>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
