@@ -25,31 +25,77 @@ const AIAssistant = () => {
   const [isTyping, setIsTyping] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
-  const mockResponses = [
-    "Aqualix is a dynamic hackathon team focused on innovation across Web Development, AI, Embedded Systems, and Cyber Security!",
-    "We participate in various hackathons and competitions. Check out our Teams page to see our amazing members!",
-    "Interested in joining us? Visit our Join Us page to submit your application and become part of the Aqualix family!",
-    "Our team specializes in cutting-edge technologies and we're always looking for passionate developers to join our ranks.",
-    "You can find our past hackathon achievements on the Hackathons page. We've participated in some amazing events!",
-    "Feel free to contact us through our contact form if you have any specific questions about collaborations or partnerships.",
-  ];
-
   const getAIResponse = (userMessage: string): string => {
     const message = userMessage.toLowerCase();
     
-    if (message.includes("join") || message.includes("application")) {
-      return "Great! You can join our team by visiting the 'Join Us' page. We have openings in Web Development, AI, Embedded Systems, and Cyber Security teams.";
-    } else if (message.includes("team") || message.includes("member")) {
-      return "Our team consists of talented individuals across different domains. Check out our Teams page to meet our amazing members!";
-    } else if (message.includes("hackathon") || message.includes("competition")) {
-      return "We actively participate in hackathons and have achieved great results! Visit our Hackathons page to see our past achievements and upcoming events.";
-    } else if (message.includes("contact") || message.includes("reach")) {
-      return "You can reach us through our contact form at the bottom of the homepage, or connect with us on our social media channels!";
-    } else if (message.includes("technology") || message.includes("tech")) {
-      return "We work with cutting-edge technologies in Web Development (React, Node.js), AI/ML, Embedded Systems (Arduino, IoT), and Cyber Security.";
-    } else {
-      return mockResponses[Math.floor(Math.random() * mockResponses.length)];
+    // Greeting responses
+    if (message.includes("hello") || message.includes("hi") || message.includes("hey")) {
+      return "Hello! Welcome to Aqualix! I'm here to help you learn about our hackathon team. What would you like to know?";
     }
+    
+    // Joining and recruitment
+    if (message.includes("join") || message.includes("application") || message.includes("recruit") || message.includes("apply")) {
+      return "Great to hear you're interested in joining us! You can apply through our 'Join Us' page. We have openings in Web Development, AI, Embedded Systems, and Cyber Security teams. What's your area of interest?";
+    }
+    
+    // Team and members
+    if (message.includes("team") || message.includes("member") || message.includes("people") || message.includes("who")) {
+      return "Our team consists of talented individuals across different domains. Check out our Teams page to meet our amazing members! We're a diverse group of developers, AI enthusiasts, hardware hackers, and security experts.";
+    }
+    
+    // Hackathons and competitions
+    if (message.includes("hackathon") || message.includes("competition") || message.includes("event") || message.includes("participate")) {
+      return "We actively participate in hackathons and have achieved great results! Visit our Hackathons page to see our past achievements and upcoming events. We love the challenge and innovation that hackathons bring!";
+    }
+    
+    // Contact information
+    if (message.includes("contact") || message.includes("reach") || message.includes("email") || message.includes("social")) {
+      return "You can reach us through our contact form at the bottom of the homepage, or connect with us on GitHub, LinkedIn, Instagram, and Discord! We're always happy to chat about collaborations and partnerships.";
+    }
+    
+    // Technology and skills
+    if (message.includes("technology") || message.includes("tech") || message.includes("skill") || message.includes("programming") || message.includes("code")) {
+      return "We work with cutting-edge technologies! Our Web team uses React, Node.js, and modern frameworks. Our AI team works with machine learning and data science. Our Embedded team handles Arduino, IoT, and hardware projects. Our Cyber Security team focuses on ethical hacking and security research.";
+    }
+    
+    // About Aqualix
+    if (message.includes("aqualix") || message.includes("about") || message.includes("what is") || message.includes("tell me")) {
+      return "Aqualix is a dynamic hackathon team focused on innovation across Web Development, AI, Embedded Systems, and Cyber Security! We're passionate about technology, learning, and building amazing projects together.";
+    }
+    
+    // Location and meetings
+    if (message.includes("where") || message.includes("location") || message.includes("meet") || message.includes("office")) {
+      return "We're a diverse team that collaborates both online and at various hackathon venues! For specific meeting information or collaboration opportunities, feel free to reach out through our contact form.";
+    }
+    
+    // Projects and portfolio
+    if (message.includes("project") || message.includes("portfolio") || message.includes("work") || message.includes("built")) {
+      return "We've worked on numerous exciting projects across all our domains! Check out our Hackathons page to see some of our achievements, and visit our Teams page to learn more about what each team specializes in.";
+    }
+    
+    // Requirements and qualifications
+    if (message.includes("requirement") || message.includes("qualification") || message.includes("experience") || message.includes("beginner")) {
+      return "We welcome team members of all skill levels! Whether you're a beginner eager to learn or an experienced developer, there's a place for you at Aqualix. Passion and willingness to learn matter most to us!";
+    }
+    
+    // Help and support
+    if (message.includes("help") || message.includes("support") || message.includes("question") || message.includes("how")) {
+      return "I'm here to help! You can ask me about our team structure, how to join, our technologies, past projects, or anything else about Aqualix. What specific information are you looking for?";
+    }
+    
+    // Default fallback with context awareness
+    if (message.length < 3) {
+      return "Could you please provide a bit more detail? I'd love to help you learn more about Aqualix!";
+    }
+    
+    // More intelligent fallback
+    const fallbackResponses = [
+      "That's an interesting question! While I might not have specific details about that, I can tell you that Aqualix is always exploring new technologies and opportunities. Feel free to contact us directly for more detailed information!",
+      "I want to make sure I give you the most accurate information. Could you rephrase your question or let me know what specific aspect of Aqualix you're curious about?",
+      "Great question! For the most up-to-date and detailed information about that topic, I'd recommend checking our website sections or reaching out through our contact form. Is there anything else about our team structure, joining process, or technologies I can help with?",
+    ];
+    
+    return fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
   };
 
   const handleSendMessage = () => {
