@@ -2,7 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { MessageCircle, X, Send } from "lucide-react";
+import { MessageCircle, X, Send, Settings } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface Message {
   id: string;
@@ -13,10 +14,13 @@ interface Message {
 
 const AIAssistant = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showApiKeyInput, setShowApiKeyInput] = useState(false);
+  const [apiKey, setApiKey] = useState("");
+  const [tempApiKey, setTempApiKey] = useState("");
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
-      text: "Hi! I'm Aqualix AI Assistant. How can I help you learn more about our hackathon team?",
+      text: "Hi! I'm Aqualix AI Assistant powered by real AI. I have full context about our hackathon team. How can I help you today?",
       isUser: false,
       timestamp: new Date(),
     },
@@ -24,81 +28,110 @@ const AIAssistant = () => {
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
 
-  const getAIResponse = (userMessage: string): string => {
-    const message = userMessage.toLowerCase();
-    
-    // Greeting responses
-    if (message.includes("hello") || message.includes("hi") || message.includes("hey")) {
-      return "Hello! Welcome to Aqualix! I'm here to help you learn about our hackathon team. What would you like to know?";
+  // Load API key from localStorage on component mount
+  useEffect(() => {
+    const savedApiKey = localStorage.getItem("openai_api_key");
+    if (savedApiKey) {
+      setApiKey(savedApiKey);
     }
-    
-    // Joining and recruitment
-    if (message.includes("join") || message.includes("application") || message.includes("recruit") || message.includes("apply")) {
-      return "Great to hear you're interested in joining us! You can apply through our 'Join Us' page. We have openings in Web Development, AI, Embedded Systems, and Cyber Security teams. What's your area of interest?";
+  }, []);
+
+  const AQUALIX_CONTEXT = `
+You are Aqualix AI Assistant, representing the Aqualix hackathon team. Here's everything you need to know:
+
+ABOUT AQUALIX:
+- We are a dynamic hackathon team focused on innovation across Web Development, AI, Embedded Systems, and Cyber Security
+- We participate in various hackathons and competitions with great success
+- We welcome team members of all skill levels - passion and willingness to learn matter most
+
+OUR TEAMS:
+1. Web Development Team: Uses React, Node.js, and modern web frameworks
+2. AI Team: Works with machine learning, data science, and AI technologies
+3. Embedded Systems Team: Handles Arduino, IoT, and hardware projects  
+4. Cyber Security Team: Focuses on ethical hacking and security research
+
+HOW TO JOIN:
+- Visit our "Join Us" page to submit an application
+- We have openings in all four team areas
+- Application includes: Name, Email, LinkedIn/GitHub, Preferred Team, Motivation, and optional CV upload
+
+CONTACT & SOCIAL:
+- Contact form available on our homepage
+- Social media: GitHub, LinkedIn, Instagram, Discord
+- We're always open to collaborations and partnerships
+
+WEBSITE SECTIONS:
+- Home: Overview and contact form
+- Teams: Meet our amazing team members
+- Hackathons: Past achievements and upcoming events
+- Join Us: Application form for new members
+
+Always be helpful, enthusiastic, and encourage visitors to explore our different pages and consider joining our team!
+`;
+
+  const getAIResponse = async (userMessage: string): Promise<string> => {
+    if (!apiKey) {
+      return "I need an OpenAI API key to provide intelligent responses. Please click the settings button to add your API key. For now, I can tell you that Aqualix is a dynamic hackathon team with Web Development, AI, Embedded Systems, and Cyber Security teams!";
     }
-    
-    // Team and members
-    if (message.includes("team") || message.includes("member") || message.includes("people") || message.includes("who")) {
-      return "Our team consists of talented individuals across different domains. Check out our Teams page to meet our amazing members! We're a diverse group of developers, AI enthusiasts, hardware hackers, and security experts.";
+
+    try {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-3.5-turbo',
+          messages: [
+            {
+              role: 'system',
+              content: AQUALIX_CONTEXT
+            },
+            {
+              role: 'user',
+              content: userMessage
+            }
+          ],
+          max_tokens: 200,
+          temperature: 0.7,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data.choices[0]?.message?.content || "I'm having trouble processing that right now. Could you try rephrasing your question?";
+      
+    } catch (error) {
+      console.error('AI Response Error:', error);
+      toast({
+        title: "AI Error",
+        description: "There was an issue getting an AI response. Please check your API key.",
+        variant: "destructive"
+      });
+      return "I'm experiencing some technical difficulties. Please try again or contact us directly through our contact form.";
     }
-    
-    // Hackathons and competitions
-    if (message.includes("hackathon") || message.includes("competition") || message.includes("event") || message.includes("participate")) {
-      return "We actively participate in hackathons and have achieved great results! Visit our Hackathons page to see our past achievements and upcoming events. We love the challenge and innovation that hackathons bring!";
-    }
-    
-    // Contact information
-    if (message.includes("contact") || message.includes("reach") || message.includes("email") || message.includes("social")) {
-      return "You can reach us through our contact form at the bottom of the homepage, or connect with us on GitHub, LinkedIn, Instagram, and Discord! We're always happy to chat about collaborations and partnerships.";
-    }
-    
-    // Technology and skills
-    if (message.includes("technology") || message.includes("tech") || message.includes("skill") || message.includes("programming") || message.includes("code")) {
-      return "We work with cutting-edge technologies! Our Web team uses React, Node.js, and modern frameworks. Our AI team works with machine learning and data science. Our Embedded team handles Arduino, IoT, and hardware projects. Our Cyber Security team focuses on ethical hacking and security research.";
-    }
-    
-    // About Aqualix
-    if (message.includes("aqualix") || message.includes("about") || message.includes("what is") || message.includes("tell me")) {
-      return "Aqualix is a dynamic hackathon team focused on innovation across Web Development, AI, Embedded Systems, and Cyber Security! We're passionate about technology, learning, and building amazing projects together.";
-    }
-    
-    // Location and meetings
-    if (message.includes("where") || message.includes("location") || message.includes("meet") || message.includes("office")) {
-      return "We're a diverse team that collaborates both online and at various hackathon venues! For specific meeting information or collaboration opportunities, feel free to reach out through our contact form.";
-    }
-    
-    // Projects and portfolio
-    if (message.includes("project") || message.includes("portfolio") || message.includes("work") || message.includes("built")) {
-      return "We've worked on numerous exciting projects across all our domains! Check out our Hackathons page to see some of our achievements, and visit our Teams page to learn more about what each team specializes in.";
-    }
-    
-    // Requirements and qualifications
-    if (message.includes("requirement") || message.includes("qualification") || message.includes("experience") || message.includes("beginner")) {
-      return "We welcome team members of all skill levels! Whether you're a beginner eager to learn or an experienced developer, there's a place for you at Aqualix. Passion and willingness to learn matter most to us!";
-    }
-    
-    // Help and support
-    if (message.includes("help") || message.includes("support") || message.includes("question") || message.includes("how")) {
-      return "I'm here to help! You can ask me about our team structure, how to join, our technologies, past projects, or anything else about Aqualix. What specific information are you looking for?";
-    }
-    
-    // Default fallback with context awareness
-    if (message.length < 3) {
-      return "Could you please provide a bit more detail? I'd love to help you learn more about Aqualix!";
-    }
-    
-    // More intelligent fallback
-    const fallbackResponses = [
-      "That's an interesting question! While I might not have specific details about that, I can tell you that Aqualix is always exploring new technologies and opportunities. Feel free to contact us directly for more detailed information!",
-      "I want to make sure I give you the most accurate information. Could you rephrase your question or let me know what specific aspect of Aqualix you're curious about?",
-      "Great question! For the most up-to-date and detailed information about that topic, I'd recommend checking our website sections or reaching out through our contact form. Is there anything else about our team structure, joining process, or technologies I can help with?",
-    ];
-    
-    return fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
   };
 
-  const handleSendMessage = () => {
+  const saveApiKey = () => {
+    if (tempApiKey.trim()) {
+      setApiKey(tempApiKey);
+      localStorage.setItem("openai_api_key", tempApiKey);
+      setTempApiKey("");
+      setShowApiKeyInput(false);
+      toast({
+        title: "API Key Saved",
+        description: "Your OpenAI API key has been saved locally.",
+      });
+    }
+  };
+
+  const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
 
     const userMessage: Message = {
@@ -108,22 +141,33 @@ const AIAssistant = () => {
       timestamp: new Date(),
     };
 
+    const currentInput = inputValue;
     setMessages((prev) => [...prev, userMessage]);
     setInputValue("");
     setIsTyping(true);
 
-    // Simulate AI response delay
-    setTimeout(() => {
+    try {
+      const aiResponseText = await getAIResponse(currentInput);
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: getAIResponse(inputValue),
+        text: aiResponseText,
         isUser: false,
         timestamp: new Date(),
       };
       
       setMessages((prev) => [...prev, aiResponse]);
+    } catch (error) {
+      console.error('Error getting AI response:', error);
+      const errorResponse: Message = {
+        id: (Date.now() + 1).toString(),
+        text: "Sorry, I'm having trouble responding right now. Please try again later or contact us directly!",
+        isUser: false,
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, errorResponse]);
+    } finally {
       setIsTyping(false);
-    }, 1000 + Math.random() * 1000);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -161,17 +205,54 @@ const AIAssistant = () => {
             <div className="bg-gradient-neon px-4 py-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-primary-foreground rounded-full animate-pulse"></div>
-                <span className="font-semibold text-primary-foreground">Aqualix AI</span>
+                <span className="font-semibold text-primary-foreground">
+                  Aqualix AI {apiKey ? "🤖" : "⚙️"}
+                </span>
               </div>
-              <Button
-                onClick={() => setIsOpen(false)}
-                variant="ghost"
-                size="icon"
-                className="h-6 w-6 text-primary-foreground hover:bg-primary-foreground/20"
-              >
-                <X className="h-4 w-4" />
-              </Button>
+              <div className="flex gap-1">
+                <Button
+                  onClick={() => setShowApiKeyInput(!showApiKeyInput)}
+                  variant="ghost"
+                  size="icon"
+                  className="h-6 w-6 text-primary-foreground hover:bg-primary-foreground/20"
+                  title={apiKey ? "API Key configured" : "Configure API Key"}
+                >
+                  <Settings className="h-4 w-4" />
+                </Button>
+                <Button
+                  onClick={() => setIsOpen(false)}
+                  variant="ghost"
+                  size="icon"
+                  className="h-6 w-6 text-primary-foreground hover:bg-primary-foreground/20"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
+
+            {/* API Key Input */}
+            {showApiKeyInput && (
+              <div className="p-3 border-b border-border bg-muted/50">
+                <div className="text-xs text-muted-foreground mb-2">
+                  Enter your OpenAI API Key for real AI responses:
+                </div>
+                <div className="flex gap-2">
+                  <Input
+                    type="password"
+                    value={tempApiKey}
+                    onChange={(e) => setTempApiKey(e.target.value)}
+                    placeholder="sk-..."
+                    className="text-xs"
+                  />
+                  <Button onClick={saveApiKey} size="sm" className="px-2">
+                    Save
+                  </Button>
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">
+                  Your key is stored locally and never shared.
+                </div>
+              </div>
+            )}
 
             {/* Messages */}
             <ScrollArea ref={scrollAreaRef} className="flex-1 p-4">
