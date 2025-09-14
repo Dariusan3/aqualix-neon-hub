@@ -14,6 +14,11 @@ const Navigation = () => {
           Hackathons
         </Button>
       </Link>
+      <Link to="/projects">
+        <Button variant="ghost" className="text-muted-foreground hover:text-neon hover:bg-neon/10 transition-all duration-300">
+          Projects
+        </Button>
+      </Link>
       <Link to="/join-us">
         <Button variant="ghost" className="text-muted-foreground hover:text-neon hover:bg-neon/10 transition-all duration-300">
           Join Us
