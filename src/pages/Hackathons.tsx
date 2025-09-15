@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Twitter, Instagram, Linkedin, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
+import Navigation from "@/components/Navigation";
 import UpcomingHackathonCard from "@/components/UpcomingHackathonCard";
 import PastHackathonCard from "@/components/PastHackathonCard";
 import hackathon1 from "@/assets/hackathon-1.jpg";
@@ -114,116 +115,114 @@ const Hackathons = () => {
   return (
     <div className="min-h-screen bg-gradient-dark">
       {/* Header */}
-      <header className="relative py-16 px-6">
-        <div className="absolute inset-0 bg-gradient-glow opacity-20" />
-        <div className="relative z-10 max-w-6xl mx-auto">
-          <Link to="/">
-            <Button variant="ghost" className="mb-8 text-muted-foreground hover:text-foreground">
-              <ArrowLeft size={20} className="mr-2" />
-              Back to Home
-            </Button>
+      <header className="border-b border-border/50 bg-card/30 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+          <Link to="/" className="text-2xl font-bold">
+            <span className="text-foreground">Aqualix</span>
+            <span className="text-neon glow-text">.</span>
           </Link>
-          
-          <h1 className="text-4xl md:text-6xl font-black mb-6">
-            Our{" "}
-            <span className="bg-gradient-neon bg-clip-text text-transparent text-neon-glow">
-              Hackathon
-            </span>
-            {" "}Journey
-          </h1>
-          
-          <p className="text-xl text-muted-foreground max-w-3xl mb-8">
-            From upcoming challenges to celebrated victories, explore Aqualix's 
-            continuous innovation in the world's most competitive hackathons.
-          </p>
-
-          {/* Social Media Links */}
-          <div className="flex gap-4">
-            <Button variant="neon-outline" size="sm" asChild>
-              <a href="https://twitter.com/aqualix" target="_blank" rel="noopener noreferrer">
-                <Twitter size={16} className="mr-2" />
-                Follow Our Journey
-              </a>
-            </Button>
-            <Button variant="ghost" size="sm" asChild>
-              <a href="https://instagram.com/aqualix" target="_blank" rel="noopener noreferrer">
-                <Instagram size={16} />
-              </a>
-            </Button>
-            <Button variant="ghost" size="sm" asChild>
-              <a href="https://linkedin.com/company/aqualix" target="_blank" rel="noopener noreferrer">
-                <Linkedin size={16} />
-              </a>
-            </Button>
-            <Button variant="ghost" size="sm" asChild>
-              <a href="https://youtube.com/aqualix" target="_blank" rel="noopener noreferrer">
-                <Youtube size={16} />
-              </a>
-            </Button>
-          </div>
+          <Navigation />
         </div>
       </header>
 
-      {/* Upcoming Hackathons */}
-      <section className="py-16 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Upcoming{" "}
-              <span className="text-primary">Challenges</span>
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Get ready for our next competitions! Watch our countdown timers and join us 
-              on these exciting innovation journeys.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-            {upcomingHackathons.map((hackathon, index) => (
-              <UpcomingHackathonCard
-                key={index}
-                name={hackathon.name}
-                date={hackathon.date}
-                location={hackathon.location}
-                theme={hackathon.theme}
-                description={hackathon.description}
-                registrationUrl={hackathon.registrationUrl}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Past Hackathons */}
-      <section className="py-16 px-6 bg-gradient-to-b from-transparent via-primary/5 to-transparent">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+      <main className="py-16 px-6">
+        <div className="max-w-7xl mx-auto">
+          {/* Hero Section */}
+          <div className="text-center mb-16 animate-fade-in">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6">
               Our{" "}
-              <span className="text-secondary">Achievements</span>
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              A showcase of our victories, innovations, and the incredible projects 
-              we've built at hackathons around the world.
+              <span className="text-neon glow-text">Hackathon</span>{" "}
+              Journey
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
+              From upcoming challenges to celebrated victories, explore Aqualix's 
+              continuous innovation in the world's most competitive hackathons.
             </p>
+
+            {/* Social Media Links */}
+            <div className="flex justify-center gap-4">
+              <Button variant="neon-outline" size="sm" asChild>
+                <a href="https://twitter.com/aqualix" target="_blank" rel="noopener noreferrer">
+                  <Twitter size={16} className="mr-2" />
+                  Follow Our Journey
+                </a>
+              </Button>
+              <Button variant="ghost" size="sm" asChild>
+                <a href="https://instagram.com/aqualix" target="_blank" rel="noopener noreferrer">
+                  <Instagram size={16} />
+                </a>
+              </Button>
+              <Button variant="ghost" size="sm" asChild>
+                <a href="https://linkedin.com/company/aqualix" target="_blank" rel="noopener noreferrer">
+                  <Linkedin size={16} />
+                </a>
+              </Button>
+              <Button variant="ghost" size="sm" asChild>
+                <a href="https://youtube.com/aqualix" target="_blank" rel="noopener noreferrer">
+                  <Youtube size={16} />
+                </a>
+              </Button>
+            </div>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {pastHackathons.map((hackathon, index) => (
-              <PastHackathonCard
-                key={index}
-                name={hackathon.name}
-                date={hackathon.date}
-                location={hackathon.location}
-                theme={hackathon.theme}
-                image={hackathon.image}
-                achievements={hackathon.achievements}
-                participants={hackathon.participants}
-              />
-            ))}
-          </div>
+
+          {/* Upcoming Hackathons */}
+          <section className="mb-16">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Upcoming{" "}
+                <span className="text-neon glow-text">Challenges</span>
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Get ready for our next competitions! Watch our countdown timers and join us 
+                on these exciting innovation journeys.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+              {upcomingHackathons.map((hackathon, index) => (
+                <UpcomingHackathonCard
+                  key={index}
+                  name={hackathon.name}
+                  date={hackathon.date}
+                  location={hackathon.location}
+                  theme={hackathon.theme}
+                  description={hackathon.description}
+                  registrationUrl={hackathon.registrationUrl}
+                />
+              ))}
+            </div>
+          </section>
+
+          {/* Past Hackathons */}
+          <section className="py-16 px-6 bg-gradient-to-b from-transparent via-primary/5 to-transparent rounded-lg">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Our{" "}
+                <span className="text-neon glow-text">Achievements</span>
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                A showcase of our victories, innovations, and the incredible projects 
+                we've built at hackathons around the world.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {pastHackathons.map((hackathon, index) => (
+                <PastHackathonCard
+                  key={index}
+                  name={hackathon.name}
+                  date={hackathon.date}
+                  location={hackathon.location}
+                  theme={hackathon.theme}
+                  image={hackathon.image}
+                  achievements={hackathon.achievements}
+                  participants={hackathon.participants}
+                />
+              ))}
+            </div>
+          </section>
         </div>
-      </section>
+      </main>
     </div>
   );
 };
