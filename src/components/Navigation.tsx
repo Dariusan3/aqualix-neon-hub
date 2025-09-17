@@ -20,8 +20,13 @@ const Navigation = () => {
         </Button>
       </Link>
       <Link to="/join-us">
-        <Button variant="ghost" className="text-muted-foreground hover:text-neon hover:bg-neon/10 transition-all duration-300">
+         <Button variant="ghost" className="text-muted-foreground hover:text-neon hover:bg-neon/10 transition-all duration-300">
           Join Us
+        </Button>
+      </Link>
+      <Link to="/merch">
+        <Button variant="ghost" className="text-muted-foreground hover:text-neon hover:bg-neon/10 transition-all duration-300">
+          Merch
         </Button>
       </Link>
     </nav>
