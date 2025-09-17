@@ -6,25 +6,25 @@ const SkillsBreakdown = () => {
     {
       name: "Frontend Development",
       value: 35,
-      color: "hsl(var(--neon))",
+      color: "hsl(180 100% 50%)",
       description: "React, TypeScript, UI/UX Design, Mobile Development"
     },
     {
       name: "Artificial Intelligence",
       value: 30,
-      color: "hsl(var(--neon-glow))", 
+      color: "hsl(210 100% 60%)", 
       description: "Machine Learning, NLP, Computer Vision, Data Science"
     },
     {
       name: "Hardware & IoT",
       value: 20,
-      color: "hsl(var(--primary))",
+      color: "hsl(160 80% 50%)",
       description: "Arduino, Raspberry Pi, Sensors, Embedded Systems"
     },
     {
       name: "Cybersecurity",
       value: 15,
-      color: "hsl(var(--accent))",
+      color: "hsl(280 70% 60%)",
       description: "Network Security, Ethical Hacking, Cryptography"
     }
   ];
@@ -66,13 +66,13 @@ const SkillsBreakdown = () => {
   return (
     <section className="relative py-16 px-6">
       {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon/5 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/3 to-transparent" />
       
       <div className="relative z-10 max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             <span className="text-foreground">Skills </span>
-            <span className="bg-gradient-neon bg-clip-text text-transparent">Breakdown</span>
+            <span className="text-neon glow-text">Breakdown</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Our diverse team combines cutting-edge technology expertise across multiple domains
