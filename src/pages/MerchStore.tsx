@@ -70,6 +70,7 @@ const products: Product[] = [
 const MerchStore = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [showCart, setShowCart] = useState(false);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
   const { toast } = useToast();
 
   const addToCart = (product: Product, size?: string, color?: string) => {
@@ -135,6 +136,36 @@ const MerchStore = () => {
 
   const getTotalItems = () => {
     return cart.reduce((total, item) => total + item.quantity, 0);
+  };
+
+  const handleCheckout = async () => {
+    if (cart.length === 0) {
+      toast({
+        title: "Cart is empty",
+        description: "Add some items before checking out.",
+      });
+      return;
+    }
+
+    const paymentLinkUrl = import.meta.env.VITE_STRIPE_PAYMENT_LINK_URL as string | undefined;
+    if (!paymentLinkUrl) {
+      toast({
+        title: "Stripe not configured",
+        description: "Missing VITE_STRIPE_PAYMENT_LINK_URL in your environment.",
+      });
+      return;
+    }
+
+    try {
+      setIsCheckingOut(true);
+      window.location.href = paymentLinkUrl;
+    } catch (error) {
+      setIsCheckingOut(false);
+      toast({
+        title: "Checkout failed",
+        description: "Please try again or contact support.",
+      });
+    }
   };
 
   return (
@@ -229,7 +260,7 @@ const MerchStore = () => {
                         ${getTotalPrice().toFixed(2)}
                       </span>
                     </div>
-                    <Button className="w-full" variant="neon">
+                    <Button className="w-full" variant="neon" onClick={handleCheckout} disabled={isCheckingOut || cart.length === 0}>
                       Checkout with Stripe
                     </Button>
                   </div>

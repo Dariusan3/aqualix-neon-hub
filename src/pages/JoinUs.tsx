@@ -56,19 +56,34 @@ export default function JoinUs() {
     }
   }, [location.state, form]);
 
-  const onSubmit = (data: FormData) => {
-    console.log("Form submitted:", data);
-    console.log("CV file:", cvFile);
-    
-    // Simulate API call
-    setTimeout(() => {
+  const onSubmit = async (data: FormData) => {
+    try {
+      const payload = { ...data };
+
+      // Optional: Upload CV to your storage in future; for now, ignore file
+
+      const response = await fetch('/api/join', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.error || 'Submission failed');
+      }
+
       toast({
         title: "Application Submitted! 🚀",
         description: "We'll review your application and get back to you soon!",
       });
-      
       setIsSubmitted(true);
-    }, 1000);
+    } catch (error: any) {
+      toast({
+        title: "Submission failed",
+        description: error?.message || "Please try again later.",
+      });
+    }
   };
 
   if (isSubmitted) {
